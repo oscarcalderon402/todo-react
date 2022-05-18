@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import useLocalStorage from './hooks/useLocalStorage';
 import CreateTodoButton from './components/CreateTodoButton';
 import TodoCounter from './components/TodoCounter';
 import TodoSearch from './components/TodoSearch';
@@ -8,13 +9,13 @@ import TodoItem from './components/TodoItem';
 const defaultTodos = [
   { text: 'cortar cebolla 1', completed: true },
   { text: 'cortar cebolla 2', completed: false },
-  { text: 'cortar cebolla 3', completed: false },
+  { text: 'cortar cebolla 3', completed: false }
 ];
 
 function App() {
-  const [todos, setTodos] = useState(defaultTodos);
+  // const [todos, setTodos] = useState(defaultTodos);
   const [search, setSearch] = useState('');
-
+  const [todos, setTodos] = useLocalStorage('TODOS_V1', []);
   let todoSeach = [];
 
   if (!search.length >= 1) {
