@@ -5,17 +5,20 @@ import TodoCounter from './components/TodoCounter';
 import TodoSearch from './components/TodoSearch';
 import TodoList from './components/TodoList';
 import TodoItem from './components/TodoItem';
+import Modal from './components/Modal';
+import Form from './components/Form';
 
 const defaultTodos = [
   { text: 'cortar cebolla 1', completed: true },
   { text: 'cortar cebolla 2', completed: false },
-  { text: 'cortar cebolla 3', completed: false }
+  { text: 'cortar cebolla 3', completed: false },
 ];
 
 function App() {
   // const [todos, setTodos] = useState(defaultTodos);
   const [search, setSearch] = useState('');
   const [todos, setTodos] = useLocalStorage('TODOS_V1', []);
+  const [openModal, setOpenModal] = useState(false);
   let todoSeach = [];
 
   if (!search.length >= 1) {
@@ -33,14 +36,13 @@ function App() {
     const index = todos.findIndex((todo) => todo.text === text);
     const newTodo = [...todos];
     newTodo[index].completed = !newTodo[index].completed;
-
-    setTodos(newTodo);
+    localStorage.setItem('TODOS_V1', JSON.stringify(newTodo));
   };
 
   const deleteTodo = (text) => {
     const newTodo = todos.filter((todo) => todo.text !== text);
 
-    setTodos(newTodo);
+    localStorage.setItem('TODOS_V1', JSON.stringify(newTodo));
   };
   return (
     <>
@@ -58,8 +60,13 @@ function App() {
             />
           );
         })}
+        {openModal && (
+          <Modal>
+            <Form setOpenModal={setOpenModal} setTodos={setTodos} />
+          </Modal>
+        )}
       </TodoList>
-      <CreateTodoButton />
+      <CreateTodoButton setOpenModal={setOpenModal} />
     </>
   );
 }
